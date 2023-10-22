@@ -68211,7 +68211,7 @@ __nccwpck_require__.a(__webpack_module__, async (__webpack_handle_async_dependen
 
 
 
-pdfjs_dist_build_pdf_js__WEBPACK_IMPORTED_MODULE_5__.GlobalWorkerOptions.workerS = pdfjs_dist_build_pdf_worker_entry__WEBPACK_IMPORTED_MODULE_6__;
+pdfjs_dist_build_pdf_js__WEBPACK_IMPORTED_MODULE_5__.GlobalWorkerOptions.workerSrc = pdfjs_dist_build_pdf_worker_entry__WEBPACK_IMPORTED_MODULE_6__;
 dotenv__WEBPACK_IMPORTED_MODULE_0__.config();
 
 const fileFormat = _actions_core__WEBPACK_IMPORTED_MODULE_4__.getInput("file-format");

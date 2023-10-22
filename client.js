@@ -7,7 +7,7 @@ import * as core from "@actions/core";
 import pdfJS from "pdfjs-dist/build/pdf.js";
 import PDFJSWorker from "pdfjs-dist/build/pdf.worker.entry";
 
-pdfJS.GlobalWorkerOptions.workerS = PDFJSWorker;
+pdfJS.GlobalWorkerOptions.workerSrc = PDFJSWorker;
 dotenv.config();
 
 export const fileFormat = core.getInput("file-format");
