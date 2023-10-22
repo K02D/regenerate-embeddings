@@ -68348,7 +68348,6 @@ for (const dir of markdownDirectories) {
       cleanText = getTextGivenPDFBase64(base64encodedText);
     }
     const docsForCurrentDir = await _client_js__WEBPACK_IMPORTED_MODULE_0__/* .textSplitter.createDocuments */ .AD.createDocuments([cleanText]);
-    console.log(docsForCurrentDir);
     docs.push(docsForCurrentDir);
   }
 }
