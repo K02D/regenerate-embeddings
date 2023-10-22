@@ -68194,24 +68194,18 @@ __nccwpck_require__.a(__webpack_module__, async (__webpack_handle_async_dependen
 /* harmony export */   "nC": () => (/* binding */ vectorStore)
 /* harmony export */ });
 /* unused harmony export fileFormat */
-/* harmony import */ var _supabase_supabase_js__WEBPACK_IMPORTED_MODULE_7__ = __nccwpck_require__(3086);
+/* harmony import */ var _supabase_supabase_js__WEBPACK_IMPORTED_MODULE_5__ = __nccwpck_require__(3086);
 /* harmony import */ var dotenv__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(3866);
 /* harmony import */ var langchain_text_splitter__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(2721);
 /* harmony import */ var langchain_vectorstores_supabase__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(4790);
 /* harmony import */ var langchain_embeddings_openai__WEBPACK_IMPORTED_MODULE_3__ = __nccwpck_require__(6221);
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_4__ = __nccwpck_require__(506);
-/* harmony import */ var pdfjs_dist_build_pdf_js__WEBPACK_IMPORTED_MODULE_5__ = __nccwpck_require__(7112);
-/* harmony import */ var pdfjs_dist_build_pdf_worker_entry__WEBPACK_IMPORTED_MODULE_6__ = __nccwpck_require__(9153);
 
 
 
 
 
 
-
-
-
-pdfjs_dist_build_pdf_js__WEBPACK_IMPORTED_MODULE_5__.GlobalWorkerOptions.workerSrc = pdfjs_dist_build_pdf_worker_entry__WEBPACK_IMPORTED_MODULE_6__;
 dotenv__WEBPACK_IMPORTED_MODULE_0__.config();
 
 const fileFormat = _actions_core__WEBPACK_IMPORTED_MODULE_4__.getInput("file-format");
@@ -68227,7 +68221,7 @@ const githubPersonalAccessToken = _actions_core__WEBPACK_IMPORTED_MODULE_4__.get
 const supabaseUrl = _actions_core__WEBPACK_IMPORTED_MODULE_4__.getInput("supabase-url");
 const supabaseAnonKey = _actions_core__WEBPACK_IMPORTED_MODULE_4__.getInput("supabase-anon-key");
 const supabaseDatabasePassword = _actions_core__WEBPACK_IMPORTED_MODULE_4__.getInput("supabase-database-password");
-const supabase = (0,_supabase_supabase_js__WEBPACK_IMPORTED_MODULE_7__.createClient)(supabaseUrl, supabaseAnonKey);
+const supabase = (0,_supabase_supabase_js__WEBPACK_IMPORTED_MODULE_5__.createClient)(supabaseUrl, supabaseAnonKey);
 
 const openAIApiKey = _actions_core__WEBPACK_IMPORTED_MODULE_4__.getInput("openai-api-key");
 const vectorStore = await langchain_vectorstores_supabase__WEBPACK_IMPORTED_MODULE_2__/* .SupabaseVectorStore.fromExistingIndex */ .g.fromExistingIndex(
@@ -68253,11 +68247,12 @@ __webpack_async_result__();
 /***/ ((__webpack_module__, __unused_webpack___webpack_exports__, __nccwpck_require__) => {
 
 __nccwpck_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
-/* harmony import */ var _octokit_core__WEBPACK_IMPORTED_MODULE_4__ = __nccwpck_require__(5490);
+/* harmony import */ var _octokit_core__WEBPACK_IMPORTED_MODULE_5__ = __nccwpck_require__(5490);
 /* harmony import */ var _client_js__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(1159);
 /* harmony import */ var cheerio__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(6002);
 /* harmony import */ var path__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(1017);
 /* harmony import */ var pdfjs_dist__WEBPACK_IMPORTED_MODULE_3__ = __nccwpck_require__(7112);
+/* harmony import */ var pdfjs_dist_build_pdf_worker_entry__WEBPACK_IMPORTED_MODULE_4__ = __nccwpck_require__(9153);
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_client_js__WEBPACK_IMPORTED_MODULE_0__]);
 _client_js__WEBPACK_IMPORTED_MODULE_0__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
 
@@ -68266,7 +68261,11 @@ _client_js__WEBPACK_IMPORTED_MODULE_0__ = (__webpack_async_dependencies__.then ?
 
 
 
-const octokit = new _octokit_core__WEBPACK_IMPORTED_MODULE_4__.Octokit({
+
+
+pdfjs_dist__WEBPACK_IMPORTED_MODULE_3__.GlobalWorkerOptions.workerSrc = pdfjs_dist_build_pdf_worker_entry__WEBPACK_IMPORTED_MODULE_4__;
+
+const octokit = new _octokit_core__WEBPACK_IMPORTED_MODULE_5__.Octokit({
   auth: _client_js__WEBPACK_IMPORTED_MODULE_0__/* .githubPersonalAccessToken */ .b3,
 });
 
