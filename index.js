@@ -109,7 +109,6 @@ async function main() {
         cleanText = await getTextGivenPDFBase64(base64encodedText);
       }
       const docsForCurrentDir = await textSplitter.createDocuments([cleanText]);
-      console.log(docsForCurrentDir);
       docs.push(...docsForCurrentDir);
     }
   }
