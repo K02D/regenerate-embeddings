@@ -13,7 +13,7 @@ import cheerio from "cheerio";
 import path from "path";
 import pkg from "pdfjs-dist";
 import pdfJS from "pdfjs-dist/build/pdf.js";
-import PDFJSWorker from "pdfjs-dist/build/pdf.worker.entry";
+import PDFJSWorker from "pdfjs-dist/build/pdf.worker.js";
 
 pdfJS.GlobalWorkerOptions.workerSrc = PDFJSWorker;
 
