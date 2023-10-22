@@ -50094,7 +50094,7 @@ console.log(_client_js__WEBPACK_IMPORTED_MODULE_2__/* .pathToMarkdownDirs */ .ci
 console.log(_client_js__WEBPACK_IMPORTED_MODULE_2__/* .githubPersonalAccessToken */ .b3);
 
 const octokit = new _octokit_core__WEBPACK_IMPORTED_MODULE_4__.Octokit({
-  auth: process.env.GH_PERSONAL_ACCESS_TOKEN,
+  auth: _client_js__WEBPACK_IMPORTED_MODULE_2__/* .githubPersonalAccessToken */ .b3,
 });
 
 async function getGithubDirectory(path) {
