@@ -3,12 +3,14 @@ import {
   supabase,
   textSplitter,
   vectorStore,
-  pathToMarkdownDirs,
+  pathToContents,
   githubPersonalAccessToken,
   repositoryOwnerUsername,
   repositoryName,
+  fileFormat,
 } from "./client.js";
 import cheerio from "cheerio";
+import path from "path";
 
 const octokit = new Octokit({
   auth: githubPersonalAccessToken,
@@ -28,44 +30,88 @@ async function getGithubDirectory(path) {
 }
 
 // Delete all rows
-console.log("Deleting all rows in supabase...\n");
-const { data, error } = await supabase.from("documents").delete().neq("id", 0);
-if (error) {
-  console.log(error);
+async function deleteAllRows() {
+  console.log("Deleting all rows in supabase...");
+  const { data, error } = await supabase
+    .from("documents")
+    .delete()
+    .neq("id", 0);
+  if (error) {
+    console.log(error);
+  }
 }
+deleteAllRows();
 
 console.log("Getting directories from github...");
 const basePath = `/repos/${repositoryOwnerUsername}/${repositoryName}/contents/`;
-const notes = await getGithubDirectory(`${basePath}${pathToMarkdownDirs}`); // Gets a list of directories, each containing a list of markdown files
+const notes = await getGithubDirectory(`${basePath}${pathToContents}`); // Gets a list of directories, each containing a list of markdown files
 const markdownDirectories = [];
 for (const note of notes) {
   // Get all markdown files in each subdirectory
   const noteResponse = await getGithubDirectory(
-    `${basePath}${pathToMarkdownDirs}/${note.name}`
+    `${basePath}${pathToContents}/${note.name}`
   );
   markdownDirectories.push(noteResponse);
 }
 console.log("\n");
 
+function getTextGivenMarkdownBase64(base64encodedText) {
+  const decodedText = Buffer.from(base64encodedText.content, "base64").toString(
+    "utf-8"
+  );
+  // Remove html tags using cheerio
+  const $ = cheerio.load(decodedText);
+  const cleanText = $.text();
+  return cleanText;
+}
+
+async function getTextGivenPDFBase64(base64encodedText) {
+  const binaryData = Buffer.from(base64encodedText.content, "base64").toString(
+    "utf-8"
+  );
+  let uint8Array = new Uint8Array(binaryData.length);
+  for (let i = 0; i < binaryData.length; i++) {
+    uint8Array[i] = binaryData.charCodeAt(i);
+  }
+
+  import pkg from "pdfjs-dist";
+  const { getDocument } = pkg;
+
+  async function extractText(pdfData) {
+    let textContent = "";
+    const pdf = await getDocument({ data: pdfData }).promise;
+    const numPages = pdf.numPages;
+
+    for (let i = 1; i <= numPages; i++) {
+      const page = await pdf.getPage(i);
+      const textPage = await page.getTextContent();
+      textContent += textPage.items.map((item) => item.str).join(" ");
+    }
+
+    return textContent;
+  }
+
+  const text = await extractText(uint8Array);
+  return text;
+}
+
 console.log("Adding file embeddings to supabase vector store...");
-let docsAdded = 0;
+const docs = [];
 for (const dir of markdownDirectories) {
   for (const file of dir) {
     const base64encodedText = await getGithubDirectory(
       `${basePath}${file.path}`
     );
-    const decodedText = Buffer.from(
-      base64encodedText.content,
-      "base64"
-    ).toString("utf-8");
-    // Remove html tags using cheerio
-    const $ = cheerio.load(decodedText);
-    const cleanText = $.text();
-
-    const docs = await textSplitter.createDocuments([cleanText]);
-    vectorStore.addDocuments(docs);
-    console.log(`Added embedding for ${file.path}`);
-    docsAdded++;
+    let cleanText;
+    if path.extname(file.name == ".md") {
+      cleanText = getTextGivenMarkdownBase64(base64encodedText);
+    } else if (path.extname(file.name == ".pdf")) {
+      cleanText = getTextGivenPDFBase64(base64encodedText);
+    }
+    const docsForCurrentDir = await textSplitter.createDocuments([cleanText]);
+    console.log(docsForCurrentDir);
+    docs.push(docsForCurrentDir);
   }
 }
-console.log(`Added ${docsAdded} file embeddings to supabase vector store`);
+vectorStore.addDocuments(docs);
+console.log(`Added ${docs.length} file embeddings to supabase vector store`);

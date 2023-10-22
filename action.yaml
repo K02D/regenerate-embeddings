@@ -23,8 +23,11 @@ inputs:
   repository-name:
     description: 'Name of the repository'
     required: true
-  path-to-markdown-dirs:
-    description: 'Path to the directory containing directories of markdown files (e.g. notes/)'
+  path-to-contents:
+    description: 'Path to the directory containing subdirectories of files (e.g. notes)'
+    required: true
+  file-format:
+    description: 'File format of the notes'
     required: true
 runs:
   using: 'node20'

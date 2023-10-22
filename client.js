@@ -7,11 +7,12 @@ import * as core from "@actions/core";
 
 dotenv.config();
 
+export const fileFormat = core.getInput("file-format");
 export const repositoryOwnerUsername = core.getInput(
   "repository-owner-username"
 );
 export const repositoryName = core.getInput("repository-name");
-export const pathToMarkdownDirs = core.getInput("path-to-markdown-dirs");
+export const pathToContents = core.getInput("path-to-contents");
 export const githubPersonalAccessToken = core.getInput(
   "github-personal-access-token"
 );
@@ -33,4 +34,5 @@ export const vectorStore = await SupabaseVectorStore.fromExistingIndex(
 
 export const textSplitter = new RecursiveCharacterTextSplitter({
   chunkSize: 1000,
+  chunkOverlap: 50,
 });
