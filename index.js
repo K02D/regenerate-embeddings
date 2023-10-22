@@ -13,9 +13,6 @@ import {
 } from "./client.js";
 import cheerio from "cheerio";
 
-console.log(pathToMarkdownDirs);
-console.log(githubPersonalAccessToken);
-
 const octokit = new Octokit({
   auth: githubPersonalAccessToken,
 });
