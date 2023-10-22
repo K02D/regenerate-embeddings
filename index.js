@@ -15,7 +15,7 @@ console.log(pathToMarkdownDirs);
 console.log(githubPersonalAccessToken);
 
 const octokit = new Octokit({
-  auth: process.env.GH_PERSONAL_ACCESS_TOKEN,
+  auth: githubPersonalAccessToken,
 });
 
 async function getGithubDirectory(path) {
