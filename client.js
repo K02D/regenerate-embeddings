@@ -6,7 +6,7 @@ import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import * as core from "@actions/core";
 dotenv.config();
 
-export const fileFormat = core.getInput("file-format");
+export const directoryStructure = core.getInput("directory-structure");
 export const repositoryOwnerUsername = core.getInput(
   "repository-owner-username"
 );

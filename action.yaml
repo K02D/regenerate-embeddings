@@ -24,7 +24,10 @@ inputs:
     description: 'Name of the repository'
     required: true
   path-to-contents:
-    description: 'Path to the directory containing subdirectories of files (e.g. notes)'
+    description: 'Path to the directory containing notes content'
+    required: true
+  directory-structure:
+    description: "Either 'nested' or flat'. 'nested': `path-to-contents` points to a list of directories. 'flat': `path-to-contents` points to a list of files"
     required: true
 runs:
   using: 'node20'
