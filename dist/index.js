@@ -50082,32 +50082,24 @@ __webpack_async_result__();
 /***/ ((__webpack_module__, __unused_webpack___webpack_exports__, __nccwpck_require__) => {
 
 __nccwpck_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
-/* harmony import */ var dotenv__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(3866);
-/* harmony import */ var _octokit_core__WEBPACK_IMPORTED_MODULE_4__ = __nccwpck_require__(5490);
-/* harmony import */ var node_fetch__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(7189);
-/* harmony import */ var _client_js__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(1159);
-/* harmony import */ var cheerio__WEBPACK_IMPORTED_MODULE_3__ = __nccwpck_require__(6002);
-var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_client_js__WEBPACK_IMPORTED_MODULE_2__]);
-_client_js__WEBPACK_IMPORTED_MODULE_2__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
-
-dotenv__WEBPACK_IMPORTED_MODULE_0__.config();
+/* harmony import */ var _octokit_core__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(5490);
+/* harmony import */ var _client_js__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(1159);
+/* harmony import */ var cheerio__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(6002);
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_client_js__WEBPACK_IMPORTED_MODULE_0__]);
+_client_js__WEBPACK_IMPORTED_MODULE_0__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
 
 
 
 
-
-console.log(_client_js__WEBPACK_IMPORTED_MODULE_2__/* .pathToMarkdownDirs */ .ci);
-console.log(_client_js__WEBPACK_IMPORTED_MODULE_2__/* .githubPersonalAccessToken */ .b3);
-
-const octokit = new _octokit_core__WEBPACK_IMPORTED_MODULE_4__.Octokit({
-  auth: _client_js__WEBPACK_IMPORTED_MODULE_2__/* .githubPersonalAccessToken */ .b3,
+const octokit = new _octokit_core__WEBPACK_IMPORTED_MODULE_2__.Octokit({
+  auth: _client_js__WEBPACK_IMPORTED_MODULE_0__/* .githubPersonalAccessToken */ .b3,
 });
 
 async function getGithubDirectory(path) {
   console.log(`Getting content from ${path}`);
   const response = await octokit.request(`GET ${path}`, {
-    owner: _client_js__WEBPACK_IMPORTED_MODULE_2__/* .repositoryOwnerUsername */ .Xk,
-    repo: _client_js__WEBPACK_IMPORTED_MODULE_2__/* .repositoryName */ .AF,
+    owner: _client_js__WEBPACK_IMPORTED_MODULE_0__/* .repositoryOwnerUsername */ .Xk,
+    repo: _client_js__WEBPACK_IMPORTED_MODULE_0__/* .repositoryName */ .AF,
     path: path,
     headers: {
       "X-GitHub-Api-Version": "2022-11-28",
@@ -50118,19 +50110,19 @@ async function getGithubDirectory(path) {
 
 // Delete all rows
 console.log("Deleting all rows in supabase...\n");
-const { data, error } = await _client_js__WEBPACK_IMPORTED_MODULE_2__/* .supabase.from */ .OQ.from("documents").delete().neq("id", 0);
+const { data, error } = await _client_js__WEBPACK_IMPORTED_MODULE_0__/* .supabase.from */ .OQ.from("documents").delete().neq("id", 0);
 if (error) {
   console.log(error);
 }
 
 console.log("Getting directories from github...");
-const basePath = `/repos/${_client_js__WEBPACK_IMPORTED_MODULE_2__/* .repositoryOwnerUsername */ .Xk}/${_client_js__WEBPACK_IMPORTED_MODULE_2__/* .repositoryName */ .AF}/contents/`;
-const notes = await getGithubDirectory(`${basePath}${_client_js__WEBPACK_IMPORTED_MODULE_2__/* .pathToMarkdownDirs */ .ci}`); // Gets a list of directories, each containing a list of markdown files
+const basePath = `/repos/${_client_js__WEBPACK_IMPORTED_MODULE_0__/* .repositoryOwnerUsername */ .Xk}/${_client_js__WEBPACK_IMPORTED_MODULE_0__/* .repositoryName */ .AF}/contents/`;
+const notes = await getGithubDirectory(`${basePath}${_client_js__WEBPACK_IMPORTED_MODULE_0__/* .pathToMarkdownDirs */ .ci}`); // Gets a list of directories, each containing a list of markdown files
 const markdownDirectories = [];
 for (const note of notes) {
   // Get all markdown files in each subdirectory
   const noteResponse = await getGithubDirectory(
-    `${basePath}${_client_js__WEBPACK_IMPORTED_MODULE_2__/* .pathToMarkdownDirs */ .ci}/${note.name}`
+    `${basePath}${_client_js__WEBPACK_IMPORTED_MODULE_0__/* .pathToMarkdownDirs */ .ci}/${note.name}`
   );
   markdownDirectories.push(noteResponse);
 }
@@ -50148,11 +50140,11 @@ for (const dir of markdownDirectories) {
       "base64"
     ).toString("utf-8");
     // Remove html tags using cheerio
-    const $ = cheerio__WEBPACK_IMPORTED_MODULE_3__/* ["default"].load */ .ZP.load(decodedText);
+    const $ = cheerio__WEBPACK_IMPORTED_MODULE_1__/* ["default"].load */ .ZP.load(decodedText);
     const cleanText = $.text();
 
-    const docs = await _client_js__WEBPACK_IMPORTED_MODULE_2__/* .textSplitter.createDocuments */ .AD.createDocuments([cleanText]);
-    _client_js__WEBPACK_IMPORTED_MODULE_2__/* .vectorStore.addDocuments */ .nC.addDocuments(docs);
+    const docs = await _client_js__WEBPACK_IMPORTED_MODULE_0__/* .textSplitter.createDocuments */ .AD.createDocuments([cleanText]);
+    _client_js__WEBPACK_IMPORTED_MODULE_0__/* .vectorStore.addDocuments */ .nC.addDocuments(docs);
     console.log(`Added embedding for ${file.path}`);
     docsAdded++;
   }
