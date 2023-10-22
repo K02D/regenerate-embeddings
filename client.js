@@ -5,7 +5,9 @@ import { SupabaseVectorStore } from "langchain/vectorstores/supabase";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import * as core from "@actions/core";
 import pdfJS from "pdfjs-dist/build/pdf.js";
-pdfJS.GlobalWorkerOptions.workerPort = null;
+import PDFJSWorker from "pdfjs-dist/build/pdf.worker.entry";
+
+pdfJS.GlobalWorkerOptions.workerS = PDFJSWorker;
 dotenv.config();
 
 export const fileFormat = core.getInput("file-format");
