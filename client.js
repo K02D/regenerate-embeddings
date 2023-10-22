@@ -7,6 +7,10 @@ import * as core from "@actions/core";
 
 dotenv.config();
 
+export const repositoryOwnerUsername = core.getInput(
+  "repository-owner-username"
+);
+export const repositoryName = core.getInput("repository-name");
 export const pathToMarkdownDirs = core.getInput("path-to-markdown-dirs");
 export const githubPersonalAccessToken = core.getInput(
   "github-personal-access-token"

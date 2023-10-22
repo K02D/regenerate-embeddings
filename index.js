@@ -8,6 +8,8 @@ import {
   vectorStore,
   pathToMarkdownDirs,
   githubPersonalAccessToken,
+  repositoryOwnerUsername,
+  repositoryName,
 } from "./client.js";
 import cheerio from "cheerio";
 
@@ -21,8 +23,8 @@ const octokit = new Octokit({
 async function getGithubDirectory(path) {
   console.log(`Getting content from ${path}`);
   const response = await octokit.request(`GET ${path}`, {
-    owner: "k02d",
-    repo: "retrieval-augmented-generation",
+    owner: repositoryOwnerUsername,
+    repo: repositoryName,
     path: path,
     headers: {
       "X-GitHub-Api-Version": "2022-11-28",
@@ -39,12 +41,13 @@ if (error) {
 }
 
 console.log("Getting directories from github...");
-const basePath = "/repos/k02d/retrieval-augmented-generation/contents/";
-const notes = await getGithubDirectory(`${basePath}notes`); // Gets a list of directories, each containing a list of markdown files
+const basePath = `/repos/${repositoryOwnerUsername}/${repositoryName}/contents/`;
+const notes = await getGithubDirectory(`${basePath}${pathToMarkdownDirs}`); // Gets a list of directories, each containing a list of markdown files
 const markdownDirectories = [];
 for (const note of notes) {
+  // Get all markdown files in each subdirectory
   const noteResponse = await getGithubDirectory(
-    `${basePath}notes/${note.name}`
+    `${basePath}${pathToMarkdownDirs}/${note.name}`
   );
   markdownDirectories.push(noteResponse);
 }
