@@ -43,6 +43,7 @@ async function deleteAllRows() {
 deleteAllRows();
 
 console.log("Getting directories from github...");
+console.log(`Getting content from ${pathToContents}`);
 const basePath = `/repos/${repositoryOwnerUsername}/${repositoryName}/contents/`;
 const notes = await getGithubDirectory(`${basePath}${pathToContents}`); // Gets a list of directories, each containing a list of markdown files
 const markdownDirectories = [];
