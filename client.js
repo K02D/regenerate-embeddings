@@ -4,7 +4,8 @@ import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { SupabaseVectorStore } from "langchain/vectorstores/supabase";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import * as core from "@actions/core";
-
+import pdfJS from "pdfjs-dist/build/pdf.js";
+pdfJS.GlobalWorkerOptions.workerPort = null;
 dotenv.config();
 
 export const fileFormat = core.getInput("file-format");
