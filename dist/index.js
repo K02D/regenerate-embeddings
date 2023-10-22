@@ -50023,7 +50023,9 @@ module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("zlib");
 __nccwpck_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 /* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
 /* harmony export */   "AD": () => (/* binding */ textSplitter),
+/* harmony export */   "AF": () => (/* binding */ repositoryName),
 /* harmony export */   "OQ": () => (/* binding */ supabase),
+/* harmony export */   "Xk": () => (/* binding */ repositoryOwnerUsername),
 /* harmony export */   "b3": () => (/* binding */ githubPersonalAccessToken),
 /* harmony export */   "ci": () => (/* binding */ pathToMarkdownDirs),
 /* harmony export */   "nC": () => (/* binding */ vectorStore)
@@ -50043,6 +50045,10 @@ __nccwpck_require__.a(__webpack_module__, async (__webpack_handle_async_dependen
 
 dotenv__WEBPACK_IMPORTED_MODULE_0__.config();
 
+const repositoryOwnerUsername = _actions_core__WEBPACK_IMPORTED_MODULE_4__.getInput(
+  "repository-owner-username"
+);
+const repositoryName = _actions_core__WEBPACK_IMPORTED_MODULE_4__.getInput("repository-name");
 const pathToMarkdownDirs = _actions_core__WEBPACK_IMPORTED_MODULE_4__.getInput("path-to-markdown-dirs");
 const githubPersonalAccessToken = _actions_core__WEBPACK_IMPORTED_MODULE_4__.getInput(
   "github-personal-access-token"
@@ -50100,8 +50106,8 @@ const octokit = new _octokit_core__WEBPACK_IMPORTED_MODULE_4__.Octokit({
 async function getGithubDirectory(path) {
   console.log(`Getting content from ${path}`);
   const response = await octokit.request(`GET ${path}`, {
-    owner: "k02d",
-    repo: "retrieval-augmented-generation",
+    owner: _client_js__WEBPACK_IMPORTED_MODULE_2__/* .repositoryOwnerUsername */ .Xk,
+    repo: _client_js__WEBPACK_IMPORTED_MODULE_2__/* .repositoryName */ .AF,
     path: path,
     headers: {
       "X-GitHub-Api-Version": "2022-11-28",
@@ -50118,12 +50124,13 @@ if (error) {
 }
 
 console.log("Getting directories from github...");
-const basePath = "/repos/k02d/retrieval-augmented-generation/contents/";
-const notes = await getGithubDirectory(`${basePath}notes`); // Gets a list of directories, each containing a list of markdown files
+const basePath = `/repos/${_client_js__WEBPACK_IMPORTED_MODULE_2__/* .repositoryOwnerUsername */ .Xk}/${_client_js__WEBPACK_IMPORTED_MODULE_2__/* .repositoryName */ .AF}/contents/`;
+const notes = await getGithubDirectory(`${basePath}${_client_js__WEBPACK_IMPORTED_MODULE_2__/* .pathToMarkdownDirs */ .ci}`); // Gets a list of directories, each containing a list of markdown files
 const markdownDirectories = [];
 for (const note of notes) {
+  // Get all markdown files in each subdirectory
   const noteResponse = await getGithubDirectory(
-    `${basePath}notes/${note.name}`
+    `${basePath}${_client_js__WEBPACK_IMPORTED_MODULE_2__/* .pathToMarkdownDirs */ .ci}/${note.name}`
   );
   markdownDirectories.push(noteResponse);
 }
