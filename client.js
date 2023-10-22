@@ -3,17 +3,21 @@ import * as dotenv from "dotenv";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { SupabaseVectorStore } from "langchain/vectorstores/supabase";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import * as core from "@actions/core";
+
 dotenv.config();
 
-const sup = process.env.SUPABASE_URL;
-
-export const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_ANON_KEY
+export const pathToMarkdownDirs = core.getInput("path-to-markdown-dirs");
+export const githubPersonalAccessToken = core.getInput(
+  "github-personal-access-token"
 );
 
-export const openAIApiKey = process.env.OPENAI_API_KEY;
+const supabaseUrl = core.getInput("supabase-url");
+const supabaseAnonKey = core.getInput("supabase-anon-key");
+const supabaseDatabasePassword = core.getInput("supabase-database-password");
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+const openAIApiKey = core.getInput("openai-api-key");
 export const vectorStore = await SupabaseVectorStore.fromExistingIndex(
   new OpenAIEmbeddings({ openAIApiKey }),
   {
