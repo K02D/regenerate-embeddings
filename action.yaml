@@ -26,9 +26,6 @@ inputs:
   path-to-contents:
     description: 'Path to the directory containing subdirectories of files (e.g. notes)'
     required: true
-  file-format:
-    description: 'File format of the notes'
-    required: true
 runs:
   using: 'node20'
   main: 'dist/index.js'
