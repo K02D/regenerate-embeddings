@@ -5,6 +5,7 @@ import fetch from "node-fetch";
 import { openAIApiKey } from "./client.js";
 import { supabase, textSplitter, vectorStore } from "./client.js";
 import cheerio from "cheerio";
+import * as core from "@actions/core";
 
 const octokit = new Octokit({
   auth: process.env.GH_PERSONAL_ACCESS_TOKEN,

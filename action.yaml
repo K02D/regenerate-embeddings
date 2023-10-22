@@ -1,0 +1,25 @@
+name: 'Regenerate Embeddings'
+description: 'Regenerate OpenAI word embeddings on every push and store them in Supabase'
+author: 'K02D'
+inputs:
+  path-to-markdown-dirs:
+    description: 'Path to the directory containing directories of markdown files'
+    required: true
+  github-personal-access-token:
+    description: 'Github personal access token'
+    required: true
+  openai-api-key:
+    description: 'OpenAI API key'
+    required: true
+  supabase-anon-key:
+    description: 'Supabase anon key'
+    required: true
+  supabase-database-password:
+    description: 'Supabase database password'
+    required: true
+  supabase-url:
+    description: 'Supabase url'
+    required: true
+runs:
+  using: 'node16'
+  main: 'index.js'
