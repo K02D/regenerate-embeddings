@@ -1,7 +1,4 @@
-import * as dotenv from "dotenv";
-dotenv.config();
 import { Octokit } from "@octokit/core";
-import fetch from "node-fetch";
 import {
   supabase,
   textSplitter,
