@@ -11,6 +11,7 @@ import {
 } from "./client.js";
 import cheerio from "cheerio";
 import path from "path";
+import pkg from "pdfjs-dist";
 
 const octokit = new Octokit({
   auth: githubPersonalAccessToken,
@@ -74,8 +75,6 @@ async function getTextGivenPDFBase64(base64encodedText) {
   for (let i = 0; i < binaryData.length; i++) {
     uint8Array[i] = binaryData.charCodeAt(i);
   }
-
-  import pkg from "pdfjs-dist";
   const { getDocument } = pkg;
 
   async function extractText(pdfData) {
@@ -104,9 +103,9 @@ for (const dir of markdownDirectories) {
       `${basePath}${file.path}`
     );
     let cleanText;
-    if path.extname(file.name == ".md") {
+    if (path.extname(file.name) == ".md") {
       cleanText = getTextGivenMarkdownBase64(base64encodedText);
-    } else if (path.extname(file.name == ".pdf")) {
+    } else if (path.extname(file.name) == ".pdf") {
       cleanText = getTextGivenPDFBase64(base64encodedText);
     }
     const docsForCurrentDir = await textSplitter.createDocuments([cleanText]);
