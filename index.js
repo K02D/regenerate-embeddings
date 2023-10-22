@@ -109,7 +109,6 @@ for (const dir of markdownDirectories) {
       cleanText = getTextGivenPDFBase64(base64encodedText);
     }
     const docsForCurrentDir = await textSplitter.createDocuments([cleanText]);
-    console.log(docsForCurrentDir);
     docs.push(docsForCurrentDir);
   }
 }
