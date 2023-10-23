@@ -10,14 +10,13 @@ import {
   directoryStructure,
 } from "./client.js";
 import { extname } from "path";
-import { getDocument } from "pdfjs-dist";
-import pdfJS from "pdfjs-dist/build/pdf.js";
+import { GlobalWorkerOptions, getDocument } from "pdfjs-dist";
 import PDFJSWorker from "pdfjs-dist/build/pdf.worker.js";
 import { load } from "cheerio";
 import { Endpoints } from "@octokit/types";
 import { TextItem } from "pdfjs-dist/types/src/display/api.js";
 
-pdfJS.GlobalWorkerOptions.workerSrc = PDFJSWorker;
+GlobalWorkerOptions.workerSrc = PDFJSWorker;
 
 const octokit = new Octokit({
   auth: githubPersonalAccessToken,
