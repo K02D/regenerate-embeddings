@@ -94,7 +94,7 @@ async function main() {
       const noteResponse = await getGithubDirectory(
         `${basePath}${pathToContents}/${note.name}`
       );
-      githubFileObjects.push(noteResponse);
+      githubFileObjects.push(...noteResponse);
     }
   } else if (directoryStructure == "flat") {
     githubFileObjects.push(...notes);
