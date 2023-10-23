@@ -1,6 +1,6 @@
 # regenerate-embeddings
 
-GitHub Action to regenerate OpenAI word embeddings on every push and store them in Supabase
+GitHub Action to regenerate OpenAI word embeddings and store them in a Supabase vector store via LangChain
 
 ## Inputs
 
@@ -30,7 +30,7 @@ GitHub Action to regenerate OpenAI word embeddings on every push and store them 
 
 ### `path-to-contents`
 
-**Required** Path to the directory containing notes content
+**Required** Path to the directory containing notes content relative to the root path
 
 ### `directory-structure`
 
@@ -44,7 +44,7 @@ Note: please have `github-personal-access-token`, `openai-api-key`, `supabase-an
 
 ## Example usage
 
-1. On the GitHub repository, go to Settings > Environments and create a new environment called `Dev`
+1. On the GitHub repository you're adding this action to, go to Settings > Environments and create a new environment called `Dev`
 2. Add environment variables to the `Dev` environment by following these instructions: https://docs.github.com/en/actions/learn-github-actions/variables#creating-configuration-variables-for-an-environment
 3. Create a `.github/workflows` directory in the root of the project
 4. In `.github/workflows`, create a file called `regenerate-embeddings.yml`
