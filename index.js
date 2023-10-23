@@ -87,35 +87,33 @@ async function main() {
   console.log(`Getting content from ${pathToContents}`);
   const basePath = `/repos/${repositoryOwnerUsername}/${repositoryName}/contents/`;
   const notes = await getGithubDirectory(`${basePath}${pathToContents}`); // Gets a list of directories, each containing a list of markdown files
-  const markdownDirectories = [];
+  const githubFileObjects = [];
   if (directoryStructure == "nested") {
     for (const note of notes) {
       // Get all markdown files in each subdirectory
       const noteResponse = await getGithubDirectory(
         `${basePath}${pathToContents}/${note.name}`
       );
-      markdownDirectories.push(noteResponse);
+      githubFileObjects.push(noteResponse);
     }
   } else if (directoryStructure == "flat") {
-    markdownDirectories.push(...notes);
+    githubFileObjects.push(...notes);
   }
 
   console.log("Adding file embeddings to supabase vector store...");
   const docs = [];
-  for (const dir of markdownDirectories) {
-    for (const file of dir) {
-      const base64encodedText = await getGithubDirectory(
-        `${basePath}${file.path}`
-      );
-      let cleanText;
-      if (path.extname(file.name) == ".md") {
-        cleanText = getTextGivenMarkdownBase64(base64encodedText.content);
-      } else if (path.extname(file.name) == ".pdf") {
-        cleanText = await getTextGivenPDFBase64(base64encodedText.content);
-      }
-      const docsForCurrentDir = await textSplitter.createDocuments([cleanText]);
-      docs.push(...docsForCurrentDir);
+  for (const file of githubFileObjects) {
+    const base64encodedText = await getGithubDirectory(
+      `${basePath}${file.path}`
+    );
+    let cleanText;
+    if (path.extname(file.name) == ".md") {
+      cleanText = getTextGivenMarkdownBase64(base64encodedText.content);
+    } else if (path.extname(file.name) == ".pdf") {
+      cleanText = await getTextGivenPDFBase64(base64encodedText.content);
     }
+    const docsForCurrentDir = await textSplitter.createDocuments([cleanText]);
+    docs.push(...docsForCurrentDir);
   }
   vectorStore.addDocuments(docs);
   console.log(`Added ${docs.length} file embeddings to supabase vector store`);
