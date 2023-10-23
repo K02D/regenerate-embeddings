@@ -84,6 +84,6 @@ This YAML assumes the environment variables added in step 2 are named `GH_PERSON
 
 2. Create a supabase project [here](https://supabase.com/dashboard/projects) if you don't have one. Once created, go to Project Settings > API to get the project URL and anon api key. Use these for `SUPABASE_URL` and `SUPABASE_ANON_KEY`
 
-   - Supabase is used to store the word embeddings in a [postgres vector database](https://supabase.com/docs/guides/ai) so relevant content is retrieved when a user enters a prompt. This relevant content augments the LLM's responsee
+   - Supabase is used to store the word embeddings in a [postgres vector database](https://supabase.com/docs/guides/ai) so relevant content is retrieved when a user enters a prompt. This relevant content augments the LLM's response
 
 3. Initialize your database in your supabase project using LangChain's template ([ref](https://supabase.com/docs/guides/ai/langchain?database-method=dashboard)). On your project dashboard, go to SQL Editor > Quickstarts > LangChain and click RUN
