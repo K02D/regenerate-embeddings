@@ -11,9 +11,6 @@ inputs:
   supabase-anon-key:
     description: 'Supabase anon key'
     required: true
-  supabase-database-password:
-    description: 'Supabase database password'
-    required: true
   supabase-url:
     description: 'Supabase url'
     required: true
