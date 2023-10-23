@@ -81,15 +81,10 @@ async function getTextGivenPDFBase64(base64encodedText) {
   return text;
 }
 
-async function main() {
-  await deleteAllRows();
-  console.log("Getting directories from github...");
-  console.log(`Getting content from ${pathToContents}`);
-  const basePath = `/repos/${repositoryOwnerUsername}/${repositoryName}/contents/`;
-  const notes = await getGithubDirectory(`${basePath}${pathToContents}`); // Gets a list of directories, each containing a list of markdown files
+async function getFilesFromDirectory(dirContents) {
   const githubFileObjects = [];
   if (directoryStructure == "nested") {
-    for (const note of notes) {
+    for (const note of dirContents) {
       // Get all markdown files in each subdirectory
       const noteResponse = await getGithubDirectory(
         `${basePath}${pathToContents}/${note.name}`
@@ -99,6 +94,15 @@ async function main() {
   } else if (directoryStructure == "flat") {
     githubFileObjects.push(...notes);
   }
+  return githubFileObjects;
+}
+
+async function main() {
+  await deleteAllRows();
+  console.log("Getting directories from github...");
+  const basePath = `/repos/${repositoryOwnerUsername}/${repositoryName}/contents/`;
+  const filesOrDirs = await getGithubDirectory(`${basePath}${pathToContents}`); // Gets a list of directories, each containing a list of markdown files
+  const githubFileObjects = await getFilesFromDirectory(filesOrDirs);
 
   console.log("Adding file embeddings to supabase vector store...");
   const docs = [];
