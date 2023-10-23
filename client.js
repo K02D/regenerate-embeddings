@@ -1,27 +1,22 @@
 import { createClient } from "@supabase/supabase-js";
-import * as dotenv from "dotenv";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { SupabaseVectorStore } from "langchain/vectorstores/supabase";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
-import * as core from "@actions/core";
-dotenv.config();
+import { getInput } from "@actions/core";
 
-export const directoryStructure = core.getInput("directory-structure");
-export const repositoryOwnerUsername = core.getInput(
-  "repository-owner-username"
-);
-export const repositoryName = core.getInput("repository-name");
-export const pathToContents = core.getInput("path-to-contents");
-export const githubPersonalAccessToken = core.getInput(
+export const directoryStructure = getInput("directory-structure");
+export const repositoryOwnerUsername = getInput("repository-owner-username");
+export const repositoryName = getInput("repository-name");
+export const pathToContents = getInput("path-to-contents");
+export const githubPersonalAccessToken = getInput(
   "github-personal-access-token"
 );
 
-const supabaseUrl = core.getInput("supabase-url");
-const supabaseAnonKey = core.getInput("supabase-anon-key");
-const supabaseDatabasePassword = core.getInput("supabase-database-password");
+const supabaseUrl = getInput("supabase-url");
+const supabaseAnonKey = getInput("supabase-anon-key");
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-const openAIApiKey = core.getInput("openai-api-key");
+const openAIApiKey = getInput("openai-api-key");
 export const vectorStore = await SupabaseVectorStore.fromExistingIndex(
   new OpenAIEmbeddings({ openAIApiKey }),
   {

@@ -9,11 +9,11 @@ import {
   repositoryName,
   directoryStructure,
 } from "./client.js";
-import cheerio from "cheerio";
-import path from "path";
-import pkg from "pdfjs-dist";
+import { extname } from "path";
+import { getDocument } from "pdfjs-dist";
 import pdfJS from "pdfjs-dist/build/pdf.js";
 import PDFJSWorker from "pdfjs-dist/build/pdf.worker.js";
+import { load } from "cheerio";
 
 pdfJS.GlobalWorkerOptions.workerSrc = PDFJSWorker;
 
@@ -21,7 +21,7 @@ const octokit = new Octokit({
   auth: githubPersonalAccessToken,
 });
 
-async function getGithubDirectory(path) {
+async function getGithubContents(path) {
   console.log(`Getting content from ${path}`);
   const response = await octokit.request(`GET ${path}`, {
     owner: repositoryOwnerUsername,
@@ -47,11 +47,9 @@ async function deleteAllRows() {
 }
 
 function getTextGivenMarkdownBase64(base64encodedText) {
-  const decodedText = Buffer.from(base64encodedText, "base64").toString(
-    "utf-8"
-  );
+  const decodedText = atob(base64encodedText);
   // Remove html tags using cheerio
-  const $ = cheerio.load(decodedText);
+  const $ = load(decodedText);
   const cleanText = $.text();
   return cleanText;
 }
@@ -62,7 +60,6 @@ async function getTextGivenPDFBase64(base64encodedText) {
   for (let i = 0; i < binaryData.length; i++) {
     uint8Array[i] = binaryData.charCodeAt(i);
   }
-  const { getDocument } = pkg;
 
   async function extractText(pdfData) {
     let textContent = "";
@@ -86,7 +83,7 @@ async function getFilesFromDirectory(dirContents, basePath) {
   if (directoryStructure == "nested") {
     for (const subdir of dirContents) {
       // Get all markdown files in each subdirectory
-      const noteResponse = await getGithubDirectory(
+      const noteResponse = await getGithubContents(
         `${basePath}${pathToContents}/${subdir.name}`
       );
       githubFileObjects.push(...noteResponse);
@@ -101,19 +98,19 @@ async function main() {
   await deleteAllRows();
   console.log("Getting directories from github...");
   const basePath = `/repos/${repositoryOwnerUsername}/${repositoryName}/contents/`;
-  const filesOrDirs = await getGithubDirectory(`${basePath}${pathToContents}`); // Gets a list of directories, each containing a list of markdown files
+  const filesOrDirs = await getGithubContents(`${basePath}${pathToContents}`); // Gets a list of directories, each containing a list of markdown files
   const githubFileObjects = await getFilesFromDirectory(filesOrDirs, basePath);
 
   console.log("Adding file embeddings to supabase vector store...");
   const docs = [];
   for (const file of githubFileObjects) {
-    const base64encodedText = await getGithubDirectory(
+    const base64encodedText = await getGithubContents(
       `${basePath}${file.path}`
     );
     let cleanText;
-    if (path.extname(file.name) == ".md") {
+    if (extname(file.name) == ".md") {
       cleanText = getTextGivenMarkdownBase64(base64encodedText.content);
-    } else if (path.extname(file.name) == ".pdf") {
+    } else if (extname(file.name) == ".pdf") {
       cleanText = await getTextGivenPDFBase64(base64encodedText.content);
     }
     const docsForCurrentDir = await textSplitter.createDocuments([cleanText]);
