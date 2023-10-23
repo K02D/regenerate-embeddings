@@ -10,11 +10,11 @@ GitHub Action to regenerate OpenAI word embeddings on every push and store them 
 
 ### `openai-api-key`
 
+**Required** OpenAI API key
+
+### `supabase-anon-key`
+
 **Required** Supabase anon key
-
-### `supabase-database-password`
-
-**Required** Supabase database password
 
 ### `supabase-url`
 
@@ -34,13 +34,23 @@ GitHub Action to regenerate OpenAI word embeddings on every push and store them 
 
 ### `directory-structure`
 
-**Required** Either 'nested' or flat'.
+**Required** Either `nested` or `flat`
 
-'nested': `path-to-contents` points to a list of directories.
+`nested`: `path-to-contents` points to a list of directories.
 
-'flat': `path-to-contents` points to a list of files
+`flat`: `path-to-contents` points to a list of files
+
+Note: please have `github-personal-access-token`, `openai-api-key`, `supabase-anon-key` and `supabase-url` defined as environment variables. See the section below
 
 ## Example usage
+
+1. On the GitHub repository, go to Settings > Environments and create a new environment called `Dev`
+2. Add environment variables to the `Dev` environment by following these instructions: https://docs.github.com/en/actions/learn-github-actions/variables#creating-configuration-variables-for-an-environment
+3. Create a `.github/workflows` directory in the root of the project
+4. In `.github/workflows`, create a file called `regenerate-embeddings.yml`
+5. Copy the following YAML into `regenerate-embeddings.yml`
+
+Reference: https://docs.github.com/en/actions/quickstart
 
 ```yaml
 name: Regenerate embeddings
@@ -61,6 +71,19 @@ jobs:
           github-personal-access-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
           supabase-anon-key: ${{ secrets.SUPABASE_ANON_KEY }}
-          supabase-database-password: ${{ secrets.SUPABASE_DATABASE_PASSWORD }}
           supabase-url: ${{ secrets.SUPABASE_URL }}
 ```
+
+This YAML assumes the environment variables added in step 2 are named `GH_PERSONAL_ACCESS_TOKEN`, `OPENAI_API_KEY`, `SUPABASE_ANON_KEY`, and `SUPABASE_URL`
+
+## Pre-requisites
+
+1. Create an OpenAI API key if you don't have one: https://platform.openai.com/account/api-keys. Use this for `OPENAI_API_KEY`
+
+   - OpenAI's API is used to generate the word embeddings: https://platform.openai.com/docs/guides/embeddings/what-are-embeddings
+
+2. Create a supabase project if you don't have one: https://supabase.com/dashboard/projects. Once created, go to Project Settings > API to get the project URL and anon api key. Use these for `SUPABASE_URL` and `SUPABASE_ANON_KEY`
+
+   - Supabase is used to store the word embeddings in a postgres vector database so relevant content is retrieved when a user enters a prompt to augment the LLM's response: https://supabase.com/docs/guides/ai
+
+3. Initialize your database in your supabase project using LancChain's template: https://supabase.com/docs/guides/ai/langchain?database-method=dashboard. On your project dashboard, go to SQL Editor > Quickstarts > LangChain and click RUN
