@@ -81,7 +81,7 @@ async function getTextGivenPDFBase64(base64encodedText) {
   return text;
 }
 
-async function getFilesFromDirectory(dirContents) {
+async function getFilesFromDirectory(dirContents, basePath) {
   const githubFileObjects = [];
   if (directoryStructure == "nested") {
     for (const subdir of dirContents) {
@@ -102,7 +102,7 @@ async function main() {
   console.log("Getting directories from github...");
   const basePath = `/repos/${repositoryOwnerUsername}/${repositoryName}/contents/`;
   const filesOrDirs = await getGithubDirectory(`${basePath}${pathToContents}`); // Gets a list of directories, each containing a list of markdown files
-  const githubFileObjects = await getFilesFromDirectory(filesOrDirs);
+  const githubFileObjects = await getFilesFromDirectory(filesOrDirs, basePath);
 
   console.log("Adding file embeddings to supabase vector store...");
   const docs = [];
