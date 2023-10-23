@@ -84,15 +84,15 @@ async function getTextGivenPDFBase64(base64encodedText) {
 async function getFilesFromDirectory(dirContents) {
   const githubFileObjects = [];
   if (directoryStructure == "nested") {
-    for (const note of dirContents) {
+    for (const subdir of dirContents) {
       // Get all markdown files in each subdirectory
       const noteResponse = await getGithubDirectory(
-        `${basePath}${pathToContents}/${note.name}`
+        `${basePath}${pathToContents}/${subdir.name}`
       );
       githubFileObjects.push(...noteResponse);
     }
   } else if (directoryStructure == "flat") {
-    githubFileObjects.push(...notes);
+    githubFileObjects.push(...dirContents);
   }
   return githubFileObjects;
 }
