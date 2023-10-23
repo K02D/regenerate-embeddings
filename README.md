@@ -40,7 +40,9 @@ GitHub Action to regenerate OpenAI word embeddings and store them in a Supabase 
 
 `flat`: `path-to-contents` points to a list of files
 
-Note: please have `github-personal-access-token`, `openai-api-key`, `supabase-anon-key` and `supabase-url` defined as environment variables. See the section below
+<br>
+
+**Note: please have `github-personal-access-token`, `openai-api-key`, `supabase-anon-key` and `supabase-url` defined as environment variables. See the section below**
 
 ## Example usage
 
