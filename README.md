@@ -1,6 +1,6 @@
 # regenerate-embeddings
 
-GitHub Action to regenerate OpenAI word embeddings and store them in a Supabase vector store via LangChain
+GitHub Action to regenerate OpenAI word embeddings and store them in a Supabase vector store via LangChain. Useful if you have a retrieval-augmented generation (RAG) system and want to update the word embeddings automatically when the knowledge base changes.
 
 ## Inputs
 
