@@ -76,7 +76,10 @@ jobs:
           supabase-url: ${{ secrets.SUPABASE_URL }}
 ```
 
-This YAML assumes the environment variables added in step 2 are named `GH_PERSONAL_ACCESS_TOKEN`, `OPENAI_API_KEY`, `SUPABASE_ANON_KEY`, and `SUPABASE_URL`
+This YAML
+
+1. Assumes the environment variables added in step 2 are named `GH_PERSONAL_ACCESS_TOKEN`, `OPENAI_API_KEY`, `SUPABASE_ANON_KEY`, and `SUPABASE_URL`
+2. Triggers the action on every push to the `main` branch
 
 ## Pre-requisites
 
