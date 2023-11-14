@@ -36,7 +36,7 @@ GitHub Action to regenerate OpenAI word embeddings and store them in a Supabase 
 
 **Required** Either `nested` or `flat`
 
-`nested`: `path-to-contents` points to a list of directories.
+`nested`: `path-to-contents` points to a list of directories
 
 `flat`: `path-to-contents` points to a list of files
 
